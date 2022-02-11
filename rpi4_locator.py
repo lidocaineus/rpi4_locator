@@ -9,7 +9,7 @@ from progress.spinner import MoonSpinner
 
 def spinster():
     'Run a spinner thread. Ghetto use of global "run_spinster" to end thread.'
-    spinner = MoonSpinner("[" + time.strftime("%H:%M:%S") + "] Grabbing " + rpi_url + "… ")
+    spinner = MoonSpinner("[" + time.strftime("%Y%m%d %H:%M:%S") + "] Grabbing " + rpi_url + "… ")
     while run_spinster:
         spinner.next()
         time.sleep(0.1)
@@ -47,16 +47,16 @@ def scrape_site():
                     price = urls[1].text
                     model = cells[0].text
                     store = cells[3].text
-                    print("\n[" + time.strftime("%H:%M:%S") + "] Found " + model + " at " + store + " / " + url + " for " + price)
+                    print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Found " + model + " at " + store + " / " + url + " for " + price)
                     found_one = True
 
             if found_one == False:    
-                print("\n[" + time.strftime("%H:%M:%S") + "] Nothing's in stock. Chip shortage is still a thing.")
+                print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Nothing's in stock. Chip shortage is still a thing.")
         else:
-            print("\n[" + time.strftime("%H:%M:%S") + "] Raspberry Pi table not found on page; aborting.")
+            print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Raspberry Pi table not found on page; aborting.")
     
     else:
-        print("\n[" + time.strftime("%H:%M:%S") + "] Page returned status code " + str(pi4_page.status_code))
+        print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Page returned status code " + str(pi4_page.status_code))
 
 
 if __name__ == "__main__":
