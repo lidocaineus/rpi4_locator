@@ -48,7 +48,7 @@ def scrape_site():
         else:
             print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Nothing's in stock. Chip shortage is still a thing.")
     else:
-        print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Raspberry Pi table not found on page; aborting.")
+        print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Page returned status code " + str(pi4_page.status_code))
 
 if __name__ == "__main__":
     # Arg parser
