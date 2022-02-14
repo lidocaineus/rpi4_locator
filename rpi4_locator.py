@@ -40,15 +40,19 @@ def scrape_site():
         if table:
             rows = table.find_all('tr')
             for row in rows:
-                cells = row.find_all('td')
-                if "Yes" in cells[4]:
-                    urls = row.find_all('a')
-                    url = urls[0]['href']
-                    price = urls[1].text
-                    model = cells[0].text
-                    store = cells[3].text
-                    print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Found " + model + " at " + store + " / " + url + " for " + price)
-                    found_one = True
+                try:
+                    cells = row.find_all('td')
+                    if "Yes" in cells[4]:
+                        urls = row.find_all('a')
+                        url = urls[0]['href']
+                        price = urls[1].text
+                        model = cells[0].text
+                        store = cells[3].text
+                        print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Found " + model + " at " + store + " / " + url + " for " + price)
+                        found_one = True
+                except IndexError as err:
+                    # If row is missing the Yes/No column skip it
+                    pass
 
             if found_one == False:    
                 print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Nothing's in stock. Chip shortage is still a thing.")
