@@ -22,7 +22,6 @@ def scrape_site():
     '''
     global run_spinster
     run_spinster = True
-    found_one = False
     headers = { 
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.1 Safari/605.1.15'
     }
@@ -35,33 +34,21 @@ def scrape_site():
     
     if pi4_page.status_code == 200:    
         soup = BeautifulSoup(pi4_page.text, 'html.parser')
-        table = soup.find(id='myTable')
+        found_cells = soup.find_all("td", string="Yes")
         
-        if table:
-            rows = table.find_all('tr')
-            for row in rows:
-                try:
-                    cells = row.find_all('td')
-                    if "Yes" in cells[4]:
-                        urls = row.find_all('a')
-                        url = urls[0]['href']
-                        price = urls[1].text
-                        model = cells[0].text
-                        store = cells[3].text
-                        print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Found " + model + " at " + store + " / " + url + " for " + price)
-                        found_one = True
-                except IndexError as err:
-                    # If row is missing the Yes/No column skip it
-                    pass
-
-            if found_one == False:    
-                print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Nothing's in stock. Chip shortage is still a thing.")
+        if found_cells:
+            for cell in found_cells:
+                cells = cell.find_previous_siblings("td")
+                store = cells[0].text
+                model = cells[3].text
+                price = cell.find_next_sibling("td")
+                url = price.find('a')['href']
+                price = price.find('a').text
+                print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Found " + model + " at " + store + " / " + url + " for " + price)
         else:
-            print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Raspberry Pi table not found on page; aborting.")
-    
+            print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Nothing's in stock. Chip shortage is still a thing.")
     else:
-        print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Page returned status code " + str(pi4_page.status_code))
-
+        print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Raspberry Pi table not found on page; aborting.")
 
 if __name__ == "__main__":
     # Arg parser
