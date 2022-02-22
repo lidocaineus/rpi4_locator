@@ -41,9 +41,9 @@ def scrape_site():
                 cells = cell.find_previous_siblings("td")
                 store = cells[0].text
                 model = cells[3].text
-                price = cell.find_next_sibling("td")
-                url = price.find('a')['href']
-                price = price.find('a').text
+                price = cell.find_next_siblings("td")
+                url = price[1].find('a')['href']
+                price = price[1].find('a').text
                 print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Found " + model + " at " + store + " / " + url + " for " + price)
         else:
             print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Nothing's in stock. Chip shortage is still a thing.")
@@ -52,7 +52,7 @@ def scrape_site():
 
 if __name__ == "__main__":
     # Arg parser
-    version = "version 2022.02.08.000"
+    version = "version 2022.02.22.000"
     helptext = """
         Checks https://rpilocator.com for any available Raspberry Pi 4 Model Bs
 
