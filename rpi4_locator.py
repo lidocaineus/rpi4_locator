@@ -81,7 +81,7 @@ if __name__ == "__main__":
     if continuous:
         while True:
             scrape_site()
-            for i in tqdm(range(interval), total = None, desc = "Time until next run"):
+            for i in tqdm(range(interval), total = None, desc = "[" + time.strftime("%Y%m%d %H:%M:%S") + "] Time until next run"):
                 time.sleep(1)
     else:
         scrape_site()
