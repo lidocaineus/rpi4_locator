@@ -15,12 +15,13 @@ def spinster():
     while run_spinster:
         spinner.next()
         time.sleep(0.1)
+    print("\n")
 
 def scrape_site():
     '''
-    Scrapes rpi_url; run_spinster and found_one are 
-    reset at the start of every instance of this function. Spoofs Safari 
-    15.1 (17612.2.9.1.20) on MacOS Monterey 12.0.1.
+    Scrapes rpi_url; run_spinster is reset at the start of every instance
+    of this function. Spoofs Safari 15.1 (17612.2.9.1.20) on MacOS Monterey 
+    12.0.1.
     '''
     global run_spinster
     run_spinster = True
@@ -41,20 +42,30 @@ def scrape_site():
         if found_cells:
             for cell in found_cells:
                 cells = cell.find_previous_siblings("td")
-                store = cells[0].text
-                model = cells[3].text
-                price = cell.find_next_siblings("td")
-                url = price[1].find('a')['href']
-                price = price[1].find('a').text
-                print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Found " + model + " at " + store + " / " + url + " for " + price)
+                found_data = {
+                    'store': cells[0].text,
+                    'model': cells[3].text,
+                    'price': cell.find_next_siblings("td")
+                }
+                found_data['url'] = found_data['price'][1].find('a')['href']
+                found_data['price'] =  found_data['price'][1].find('a').text
+                notify(found_data)
         else:
-            print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Nothing's in stock. Chip shortage is still a thing.")
+            print("[" + time.strftime("%Y%m%d %H:%M:%S") + "] Nothing's in stock. Chip shortage is still a thing.")
     else:
-        print("\n[" + time.strftime("%Y%m%d %H:%M:%S") + "] Page returned status code " + str(pi4_page.status_code))
+        print("[" + time.strftime("%Y%m%d %H:%M:%S") + "] Page returned status code " + str(pi4_page.status_code))
+
+def notify(f_data):
+    '''
+    f_data is a dictionary with keys store, model, price, and url of an in 
+    stock Raspberry Pi. Broken out into a function for easier notification
+    expansions as necessary.
+    '''
+    print("[" + time.strftime("%Y%m%d %H:%M:%S") + "] Found " + f_data['model'] + " at " + f_data['store'] + " / " + f_data['url'] + " for " + f_data['price'])
 
 if __name__ == "__main__":
     # Arg parser
-    version = "version 2022.02.22.001"
+    version = "version 2022.02.22.002"
     helptext = """
         Checks https://rpilocator.com for any available Raspberry Pi 4 Model Bs
 
