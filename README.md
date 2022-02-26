@@ -1,5 +1,5 @@
 # rpi4_locator
-Attempts to gently scrape rpilocator for available Raspberry Pi 4s. By default runs continuously every 30 minutes. Be nice with this!
+Attempts to gently scrape rpilocator for available Raspberry Pi 4s. By default runs continuously every 30 minutes. *PLEASE* be nice when interacting with the rpilocator site and do not be overly aggressive.
 
 ## Options
 _-n, --not-continuous_: only run once, then exit\

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import traceback
 import argparse
 import threading
@@ -52,7 +54,7 @@ def scrape_site():
 
 if __name__ == "__main__":
     # Arg parser
-    version = "version 2022.02.22.000"
+    version = "version 2022.02.22.001"
     helptext = """
         Checks https://rpilocator.com for any available Raspberry Pi 4 Model Bs
 
